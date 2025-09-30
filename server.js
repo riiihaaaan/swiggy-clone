@@ -121,6 +121,35 @@ const server = http.createServer(async (request, response) => {
       return;
     }
 
+    // MENU ITEMS API - Get food items for a restaurant
+    else if (request.url.match(/^\/api\/restaurants\/\d+\/menu$/) && request.method === 'GET') {
+      const restaurantId = parseInt(request.url.split('/')[3]);
+      try {
+        // Get meals from our database that we collected from TheMealDB API
+        const meals = await db.collection('meals').find({}).limit(8).toArray();
+
+        // Create menu items from the meal data
+        const menuItems = meals.map((meal, index) => ({
+          id: index + 1,
+          name: meal.strMeal,
+          description: `${meal.strCategory} cuisine - Authentic recipe with fresh ingredients`,
+          price: `₹${Math.floor(Math.random() * 200) + 100}`,
+          image: meal.strMealThumb,
+          category: meal.strCategory,
+          restaurantId: restaurantId,
+          rating: (Math.random() * 0.8 + 4.0).toFixed(1),
+          isVeg: Math.random() > 0.5
+        }));
+
+        response.setHeader('Content-Type', 'application/json');
+        response.end(JSON.stringify(menuItems));
+      } catch (error) {
+        console.error('Error fetching menu items:', error);
+        response.writeHead(500);
+        response.end(JSON.stringify({ error: 'Database error' }));
+      }
+    }
+
     // ORDERS API
     else if (request.url === '/api/orders' && request.method === 'GET') {
       const orders = [
