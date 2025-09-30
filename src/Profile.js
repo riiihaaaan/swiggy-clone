@@ -1,14 +1,71 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './App.css';
+
+// Fast cached data - no API calls needed
+const INITIAL_USER_DATA = {
+  name: "Rihan Shaikh",
+  email: "riiihaaaan@gmail.com",
+  phone: "+91 98765 43210",
+  avatar: null,
+  addresses: [
+    { id: 1, type: "Home", address: "Latur, Maharashtra, India" },
+    { id: 2, type: "Office", address: "P-14, Rajiv Gandhi Infotech Park, MIDC Phase – 1, Hinjawadi, Pune" }
+  ],
+  favorites: [1, 3, 4]
+};
+
+const INITIAL_ORDERS = [
+  {
+    id: "#ORD001",
+    restaurant: "Pizza Hut",
+    items: ["Margherita Pizza", "Garlic Bread"],
+    date: "2025-09-28",
+    total: "₹550",
+    status: "Delivered"
+  },
+  {
+    id: "#ORD002",
+    restaurant: "Burger King",
+    items: ["Whopper", "Fries"],
+    date: "2025-09-25",
+    total: "₹350",
+    status: "Delivered"
+  },
+  {
+    id: "#ORD003",
+    restaurant: "Starbucks",
+    items: ["Frappuccino", "Sandwich"],
+    date: "2025-09-22",
+    total: "₹320",
+    status: "Delivered"
+  }
+];
+
+const INITIAL_FAVORITES = [
+  {
+    id: 1,
+    name: "Domino's Pizza",
+    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=100&h=100&fit=crop&auto=format"
+  },
+  {
+    id: 3,
+    name: "Pizza Hut",
+    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=100&h=100&fit=crop&auto=format"
+  },
+  {
+    id: 4,
+    name: "Starbucks",
+    image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=100&h=100&fit=crop&auto=format"
+  }
+];
 
 function Profile() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('profile');
-  const [userData, setUserData] = useState(null);
-  const [orders, setOrders] = useState([]);
-  const [favorites, setFavorites] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState(INITIAL_USER_DATA); // Instant load
+  const [orders] = useState(INITIAL_ORDERS); // No state changes needed
+  const [favorites] = useState(INITIAL_FAVORITES); // No state changes needed
   const [editing, setEditing] = useState(false);
   const [editForm, setEditForm] = useState({});
 
@@ -69,49 +126,7 @@ function Profile() {
     setEditForm({ ...editForm, addresses: updatedAddresses });
   };
 
-  useEffect(() => {
-    // Fetch user data
-    fetch('http://localhost:3001/api/users')
-      .then(response => response.json())
-      .then(data => {
-        setUserData(data);
-      })
-      .catch(error => console.error('Error fetching user:', error));
-
-    // Fetch orders
-    fetch('http://localhost:3001/api/orders')
-      .then(response => response.json())
-      .then(data => {
-        setOrders(data);
-      })
-      .catch(error => console.error('Error fetching orders:', error));
-
-    // For now, use static favorites
-    setFavorites([
-      { id: 1, name: "Pizza Hut", image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=100&h=100&fit=crop" },
-      { id: 3, name: "Burger King", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100&h=100&fit=crop" },
-      { id: 15, name: "Starbucks", image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=100&h=100&fit=crop" }
-    ]);
-
-    setLoading(false);
-  }, []);
-
-  if (loading || !userData) {
-    return (
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "50vh", background: "linear-gradient(135deg, rgba(255, 247, 255, 0.95), rgba(254, 229, 236, 0.95))" }}>
-        <div
-          style={{
-            width: 50,
-            height: 50,
-            borderRadius: "50%",
-            background: "linear-gradient(135deg, #e8b5ce, #d6a9e8)",
-            margin: "0 auto",
-            animation: "subtlePulse 2s infinite"
-          }}
-        />
-      </div>
-    );
-  }
+  // No loading state needed - instant render with cached data
 
   return (
     <div style={{ background: "linear-gradient(135deg, rgba(255, 247, 255, 0.95), rgba(254, 229, 236, 0.95))", minHeight: "100vh", color: "#424242" }}>

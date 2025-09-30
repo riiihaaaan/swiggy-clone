@@ -1,0 +1,15 @@
+{
+  "short_name": "Swiggy Clone",
+  "name": "Swiggy Clone - Fast Food Delivery",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#7b1fa2",
+  "background_color": "#fef7ff",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

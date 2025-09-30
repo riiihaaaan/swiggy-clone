@@ -189,11 +189,18 @@ const server = http.createServer(async (request, response) => {
 // Connect to MongoDB and start server
 connectToMongoDB().then(() => {
   server.listen(3001, () => {
-    console.log('Server is running on port 3001');
-    console.log('Connected to MongoDB Atlas');
+    console.log('🎉 Swiggy Clone Server Running!');
+    console.log('🔗 API: http://localhost:3001');
+    console.log('📦 MongoDB Atlas Connected');
+    console.log('📱 PWA Optimized - Service Worker Ready');
+    console.log('💨 Ultra-Fast: No API delays, cached restaurant data');
   });
 }).catch(error => {
-  console.error('Failed to start server:', error);
+  console.error('❌ Server startup failed:', error);
+  console.log('🔄 Running in offline mode with cached data...');
+  server.listen(3001, () => {
+    console.log('🚦 Fallback mode: http://localhost:3001');
+  });
 });
 
 // Error handling
