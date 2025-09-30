@@ -1,30 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import RestaurantDetail from './RestaurantDetail';
 import Profile from './Profile';
 import './App.css';
-
-const pageVariants = {
-  initial: {
-    opacity: 0,
-    y: 20
-  },
-  in: {
-    opacity: 1,
-    y: 0
-  },
-  out: {
-    opacity: 0,
-    y: -20
-  }
-};
-
-const pageTransition = {
-  type: 'tween',
-  ease: 'anticipate',
-  duration: 0.5
-};
 
 function HomePage() {
   const navigate = useNavigate();
@@ -84,39 +62,28 @@ function HomePage() {
   };
 
   return (
-    <motion.div
-      className="swiggy-app"
-      initial="initial"
-      animate="in"
-      exit="out"
-      variants={pageVariants}
-      transition={pageTransition}
-    >
+    <div className="swiggy-app">
       {/* Header */}
       <header className="header">
         <div className="header-content">
           <h1 className="logo" onClick={() => navigate('/')}>swiggy</h1>
           <div className="search-bar">
-            <motion.input
+            <input
               type="text"
               placeholder="Search for restaurants and food"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input"
-              whileFocus={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300, damping: 10 }}
             />
           </div>
           <div className="header-actions">
             <div className="location">Location: Delhi</div>
-            <motion.button
+            <button
               className="profile-btn"
               onClick={() => navigate('/profile')}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
             >
               👤 Profile
-            </motion.button>
+            </button>
           </div>
         </div>
       </header>
@@ -126,18 +93,13 @@ function HomePage() {
         <h2>What are you in the mood for?</h2>
         <div className="category-list">
           {categories.map((category, index) => (
-            <motion.button
+            <button
               key={category}
               className={`category-btn ${activeCategory === category ? 'active' : ''}`}
               onClick={() => handleCategoryClick(category)}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.4 }}
             >
               {category}
-            </motion.button>
+            </button>
           ))}
         </div>
       </section>
@@ -145,25 +107,12 @@ function HomePage() {
       {/* Restaurants Grid */}
       <section className="restaurants-section">
         <h2>Top restaurants in your area</h2>
-        <motion.div
-          className="restaurants-grid"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-        >
+        <div className="restaurants-grid">
           {filteredRestaurants.map((restaurant, index) => (
-            <motion.div
+            <div
               key={restaurant.id}
               className="restaurant-card"
               onClick={() => handleRestaurantClick(restaurant.id)}
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 15px 35px rgba(102, 126, 234, 0.4)"
-              }}
-              whileTap={{ scale: 0.98 }}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
             >
               <div className="restaurant-image">
                 <img src={restaurant.image} alt={restaurant.name} />
@@ -182,11 +131,11 @@ function HomePage() {
                   {restaurant.cuisines.join(", ")}
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </section>
-    </motion.div>
+    </div>
   );
 }
 
